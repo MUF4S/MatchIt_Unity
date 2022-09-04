@@ -22,6 +22,8 @@ public class CardManager : MonoBehaviour
     GameObject pressedButton;
     int randomCard;
     float[] latestScale = new float[6];
+    public Timer timer;
+    public Chance chance;
 
 #region Cards
    int[] Card1 = {0, 1, 2, 3, 4, 25};
@@ -174,11 +176,9 @@ void GetCard(){
             stackButtons[i].transform.localScale *= scale;
             stackButtons[i].GetComponent<SetID>().setId = cards[randomCard][i];
            // stackButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = cards[randomCard][i].ToString();
-            latestScale[i] = scale;
-
-
-                 
+            latestScale[i] = scale;        
         }
+        
         currentCard = cards[randomCard];
         usedCards.Add(cards[randomCard]);
         cards.RemoveAt(randomCard);
@@ -188,11 +188,11 @@ void GetPlayerCard(int card){
      currentPlayerCard = cards[card];
      for (int i = 0; i < playerStack.transform.childCount; i++)
         {
-            
             playerStackButtons[i] = playerStack.transform.GetChild(i).GetComponent<Button>();
             playerStackButtons[i].transform.localScale *= getScale;
             playerStackButtons[i].GetComponent<SetID>().setId = cards[card][i];
             playerStackButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = cards[card][i].ToString();
+            
                  
         }
         usedCards.Add(cards[card]);
@@ -214,17 +214,18 @@ void GetPlayerCard(int[] card){
         newObjScale = new List<float>(objScale);
 }
 public void CheckItem(){
-
-    Debug.Log("Sprawdź listę ");
+    bool isOK = false;
     for (int i = 0; i < stackButtons.Length; i++)
     {
         if(stackButtons[i].GetComponent<SetID>().setId == pressedButton.GetComponent<SetID>().setId)
         {
-            if(cards.Count>1)
+            if(cards.Count > 1)
             {
                 Debug.Log("Brawo!");
                 GetPlayerCard(currentCard);
                 GetCard();
+                timer.ResetTimer();
+                isOK = true;
                 return;
             }else{
                 Debug.Log("Koniec gry my friend!");
@@ -232,8 +233,13 @@ public void CheckItem(){
             
         }
         else{
+            isOK = false;
             Debug.Log("Try again!");
         }
+
+    }
+    if(!isOK){
+        chance.LostChance();
     }
     
 }
