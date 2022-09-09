@@ -20,5 +20,11 @@ public class GameManager : MonoBehaviour
 
    public void RestartGame(){
       SceneManager.LoadScene(1);
+      Time.timeScale = 1f;
+   }
+   public void ContinuePlaying(GameObject obj){
+      Time.timeScale = 1f;
+      obj.SetActive(false);
+
    }
 }
