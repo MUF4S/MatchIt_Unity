@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
+    public static Timer instance;
     public Slider slide;
-    private float defaultTime;
+    
+    public float defaultTime;
     public float newTime;
    
-    private float currentTime;
+    public float currentTime;
     public GameManager gm;
 
     // Start is called before the first frame update
@@ -18,6 +20,7 @@ public class Timer : MonoBehaviour
         slide.maxValue = newTime;
         defaultTime = newTime;
         currentTime = defaultTime;
+        instance = this;
 
     }
 

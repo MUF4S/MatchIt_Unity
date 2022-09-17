@@ -125,7 +125,6 @@ void ShuffleCard(){
             for (int j = 0; j < cards[i].Length; j++)
             {
                 Array.Reverse(cards[i],Random.Range(0,3),Random.Range(3,5));
-                Debug.Log("Wywołano tasowanie" + cards[i].Length);
             }
             
         }

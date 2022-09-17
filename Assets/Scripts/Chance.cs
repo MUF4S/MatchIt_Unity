@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Chance : MonoBehaviour
 {   
+    public static Chance instance;
     GameObject chance1;
     GameObject chance2;
     public GameManager gm;
     int chance = 0;
     private void Start() {
+        instance = this;
         chance1 = gameObject.transform.GetChild(0).gameObject;
         chance2 = gameObject.transform.GetChild(1).gameObject;
     }
@@ -29,5 +31,10 @@ public class Chance : MonoBehaviour
             default:
                 break;
         }
+    }
+    public void ResetChance(){
+        chance = 0;
+        chance1.SetActive(false);
+        chance2.SetActive(false);
     }
 }
