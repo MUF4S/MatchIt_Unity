@@ -12,6 +12,8 @@ public class CardManager : MonoBehaviour
     public List<int[]> cards = new List<int[]>();
     List<int[]> usedCards = new List<int[]>();
     public GameObject stack;
+    GameObject _imgStack;
+    GameObject _imgPlayerStack;
     Button[] stackButtons;
     public GameObject playerStack;
     Button[] playerStackButtons;
@@ -78,7 +80,9 @@ public class CardManager : MonoBehaviour
         ShuffleCard();
     }
     private void Update() {
-        
+        if(cards.Count<2){
+            CreateStack(usedCards);
+        }
     }
     
     void CreateStack()
@@ -118,6 +122,12 @@ public class CardManager : MonoBehaviour
 
        
         
+    }
+    void CreateStack(List<int[]> list){
+        for (int i = 0; i < list.Count; i++)
+        {
+            cards.Add(list[i]);
+        }
     }
 void ShuffleCard(){
      for (int i = 0; i < cards.Count; i++)
@@ -174,7 +184,7 @@ void GetCard(){
             stackButtons[i] = stack.transform.GetChild(i).GetComponent<Button>();
             stackButtons[i].transform.localScale *= scale;
             stackButtons[i].GetComponent<SetID>().setId = cards[randomCard][i];
-           // stackButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = cards[randomCard][i].ToString();
+           
             latestScale[i] = scale;        
         }
         
@@ -190,7 +200,7 @@ void GetPlayerCard(int card){
             playerStackButtons[i] = playerStack.transform.GetChild(i).GetComponent<Button>();
             playerStackButtons[i].transform.localScale *= getScale;
             playerStackButtons[i].GetComponent<SetID>().setId = cards[card][i];
-            playerStackButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = cards[card][i].ToString();
+            
             
                  
         }
@@ -207,13 +217,14 @@ void GetPlayerCard(int[] card){
             playerStackButtons[i] = playerStack.transform.GetChild(i).GetComponent<Button>();
             playerStackButtons[i].GetComponent<SetID>().setId =  currentPlayerCard[i];
             playerStackButtons[i].transform.localScale *= latestScale[i];
-            //playerStackButtons[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =  currentPlayerCard[i].ToString();
+            
                  
         }
         newObjScale = new List<float>(objScale);
 }
 public void CheckItem(){
     bool isOK = false;
+    RemoveHint();
     for (int i = 0; i < stackButtons.Length; i++)
     {
         if(stackButtons[i].GetComponent<SetID>().setId == pressedButton.GetComponent<SetID>().setId)
@@ -240,8 +251,35 @@ public void CheckItem(){
     if(!isOK){
         chance.LostChance();
     }
+   
     
 }
+public void GetHint(){
+        for (int i = 0; i < stackButtons.Length; i++)
+        {
+            for (int j = 0; j < playerStackButtons.Length; j++)
+            {
+                if(stackButtons[i].GetComponent<SetID>().setId == playerStackButtons[j].GetComponent<SetID>().setId){
+                    Hint(stackButtons[i].transform.GetChild(0).gameObject, playerStackButtons[j].transform.GetChild(0).gameObject);
+                    return;
+                }
+                
+            }
+            
+        }
+    }
+void Hint(GameObject imgStack, GameObject imgPlayerStack){
+    _imgPlayerStack = imgPlayerStack;
+    _imgStack = imgStack;
+
+    _imgPlayerStack.SetActive(true);
+    _imgStack.SetActive(true);
+}
+void RemoveHint(){
+    _imgPlayerStack.SetActive(false);
+    _imgStack.SetActive(false);
+    }
+
 public void SetPressedButton(GameObject obj){
     pressedButton = obj;
 }

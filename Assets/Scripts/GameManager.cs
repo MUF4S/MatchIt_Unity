@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
    public TextMeshProUGUI messageText;
    public GameObject gamePanel;
    public GameObject overPanel;
-   bool requested = false;
-
+   public bool requested = false;
+   public UnityAction _Revive;
    private void Start() {
-      GoogleAdMobController.instance.RequestAndLoadRewardedAd();
+      //GoogleAdMobController.instance.RequestAndLoadRewardedAd();
+      _Revive += Revive;
    }
    private void Update() {
       if(!requested)
       {
          GoogleAdMobController.instance.RequestAndLoadRewardedAd();
+         Debug.Log("Requested a AD");
+         requested = true;
       }
+      Debug.Log(requested);
    }
 
 
@@ -44,12 +49,17 @@ public class GameManager : MonoBehaviour
       obj.SetActive(false);
 
    }
+   void Revive(){
+      
+   }
    public void Revive(GameObject obj){
       obj.SetActive(false);
       Time.timeScale = 1f;
       Timer.instance.currentTime = Timer.instance.defaultTime;
       Chance.instance.ResetChance();
-      requested = false;
-
+      
+   }
+   void GetRewardAd(){
+      GoogleAdMobController.instance.OnUserEarnedRewardEvent.AddListener(Revive);
    }
 }
