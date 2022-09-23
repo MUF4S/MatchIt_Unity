@@ -1,29 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 public class SetID : MonoBehaviour
 {
-    [SerializeField]int id;
+    [SerializeField]
+    private int id;
+    
     public Sprite[] image;
     public int setId{
+        get => id;
         
-        get{
-            return id;
-        }
-        set{
-         id = value;
+        set{ id = value;
          SetImage();
          }
-        }
-        void SetImage(){
-            
-                gameObject.GetComponent<Image>().sprite = image[id];
-            
-            
     }
+    private void SetImage(){ 
+        gameObject.GetComponent<Image>().sprite = image[id];
     }
+}
 
  

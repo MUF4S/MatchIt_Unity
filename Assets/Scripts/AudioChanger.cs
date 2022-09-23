@@ -1,31 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioChanger : MonoBehaviour
 {
-    AudioSource audioSource;
+    private AudioSource _audioSource;
     public AudioClip[] clip;
-    int i = 0;
-    void Start()
+    private int _clipIndex;
+    private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        
+        _audioSource = GetComponent<AudioSource>();
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
-       
-        if(!audioSource.isPlaying)
+        if(!_audioSource.isPlaying)
         {
-            i++;
-            audioSource.clip = clip[i];
-            audioSource.Play();
+            _clipIndex++;
+            _audioSource.clip = clip[_clipIndex];
+            _audioSource.Play();
         }
 
-        if(i > clip.Length-1){
-            i = 0;
+        if(_clipIndex > clip.Length-1){
+            _clipIndex = 0;
         }
     }
 }

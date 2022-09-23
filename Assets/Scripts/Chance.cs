@@ -1,40 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Chance : MonoBehaviour
 {   
-    public static Chance instance;
-    GameObject chance1;
-    GameObject chance2;
+    public static Chance Instance;
+    private GameObject _chance1;
+    private GameObject _chance2;
     public GameManager gm;
-    int chance = 0;
+    private int _chance = 0;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start() {
-        instance = this;
-        chance1 = gameObject.transform.GetChild(0).gameObject;
-        chance2 = gameObject.transform.GetChild(1).gameObject;
+        _chance1 = gameObject.transform.GetChild(0).gameObject;
+        _chance2 = gameObject.transform.GetChild(1).gameObject;
     }
     public void LostChance(){
-        chance++;
-        switch (chance)
+        _chance++;
+        switch (_chance)
         {
             case 1:
-                chance1.SetActive(true);
+                _chance1.SetActive(true);
                 break;
             case 2:
-                chance2.SetActive(true);
+                _chance2.SetActive(true);
                 break;
             case 3:
                 gm.GameOver("Sorry, You lost your chances.");
                 break;
-
-            default:
-                break;
         }
     }
     public void ResetChance(){
-        chance = 0;
-        chance1.SetActive(false);
-        chance2.SetActive(false);
+        _chance = 0;
+        _chance1.SetActive(false);
+        _chance2.SetActive(false);
     }
 }
