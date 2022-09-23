@@ -7,14 +7,23 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+
+   #region variables
    public TextMeshProUGUI messageText;
+   public CardManager cardMan;
    public GameObject gamePanel;
    public GameObject overPanel;
    public bool requested = false;
    public UnityAction _Revive;
+   public UnityAction _Hint;
+
+
+   #endregion
    private void Start() {
-      //GoogleAdMobController.instance.RequestAndLoadRewardedAd();
-      _Revive += Revive;
+      cardMan = GetComponent<CardManager>();
+
+      _Revive += GetRevive;
+      _Hint += cardMan.GetHint;
    }
    private void Update() {
       if(!requested)
@@ -28,15 +37,8 @@ public class GameManager : MonoBehaviour
 
 
    public void GameOver(string message){
-    //gamePanel.SetActive(false);
     overPanel.SetActive(true);
     messageText.text = message;
-   /* if(!requested)
-    {
-      GoogleAdMobController.instance.RequestAndLoadRewardedAd();
-      requested = true;
-    }*/
-    
    }
 
    public void RestartGame(){
@@ -45,21 +47,31 @@ public class GameManager : MonoBehaviour
       
    }
    public void ContinuePlaying(GameObject obj){
-      Time.timeScale = 1f;
+      //Time.timeScale = 1f;
+      Timer.instance.StopTime();
       obj.SetActive(false);
 
    }
-   void Revive(){
-      
+   void GetRevive(){
+      Revive(overPanel);
    }
-   public void Revive(GameObject obj){
+   void Revive(GameObject obj){
       obj.SetActive(false);
-      Time.timeScale = 1f;
+      Timer.instance.StopTime();
+      //Time.timeScale = 1f;
       Timer.instance.currentTime = Timer.instance.defaultTime;
       Chance.instance.ResetChance();
       
    }
-   void GetRewardAd(){
-      GoogleAdMobController.instance.OnUserEarnedRewardEvent.AddListener(Revive);
+   void GetRewardAd(UnityAction action){
+      GoogleAdMobController.instance.OnUserEarnedRewardEvent.AddListener(action);
+      Debug.Log("Wywołano" + action);
    }
+   public void SetReviveAction(){
+      GetRewardAd(_Revive);
+   }
+   public void SetHintAction(){
+      GetRewardAd(_Hint);
+   }
+
 }

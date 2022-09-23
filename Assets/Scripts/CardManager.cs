@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 public class CardManager : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class CardManager : MonoBehaviour
     float[] latestScale = new float[6];
     public Timer timer;
     public Chance chance;
+    bool hint;
 
 #region Cards
    int[] Card1 = {0, 1, 2, 3, 4, 25};
@@ -224,7 +225,10 @@ void GetPlayerCard(int[] card){
 }
 public void CheckItem(){
     bool isOK = false;
-    RemoveHint();
+    if(hint){
+        RemoveHint();
+    }
+    
     for (int i = 0; i < stackButtons.Length; i++)
     {
         if(stackButtons[i].GetComponent<SetID>().setId == pressedButton.GetComponent<SetID>().setId)
@@ -255,6 +259,7 @@ public void CheckItem(){
     
 }
 public void GetHint(){
+    hint = true;
         for (int i = 0; i < stackButtons.Length; i++)
         {
             for (int j = 0; j < playerStackButtons.Length; j++)
@@ -278,6 +283,7 @@ void Hint(GameObject imgStack, GameObject imgPlayerStack){
 void RemoveHint(){
     _imgPlayerStack.SetActive(false);
     _imgStack.SetActive(false);
+    hint = false;
     }
 
 public void SetPressedButton(GameObject obj){

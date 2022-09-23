@@ -13,7 +13,7 @@ public class PauseMenuScript : MonoBehaviour
         
         funnyText = System.IO.File.ReadAllLines(@"F:\GitRepos\MatchIt_Unity\MatchIt\FunnyText.txt");
         funnyMessage.text = funnyText[Random.Range(0,2)];
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
     // Update is called once per frame

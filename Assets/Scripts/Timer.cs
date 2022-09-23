@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
     
     public float defaultTime;
     public float newTime;
-   
+    public bool stopTime = false;
     public float currentTime;
     public GameManager gm;
 
@@ -27,8 +27,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentTime -= Time.deltaTime;
+        if(stopTime == false){
+            currentTime -= Time.deltaTime;
         slide.value = currentTime;
+        }
+        
+        Debug.Log("Stop time?: " + stopTime);
         
         if(currentTime <=0)
         {
@@ -39,5 +43,8 @@ public class Timer : MonoBehaviour
 
     public void ResetTimer(){
         currentTime = defaultTime;
+    }
+    public void StopTime(){
+        stopTime = !stopTime;
     }
 }
