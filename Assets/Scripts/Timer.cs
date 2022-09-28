@@ -28,7 +28,6 @@ public class Timer : MonoBehaviour
             slide.value = currentTime;
         }
         
-        print($"Stop time?: {stopTime}");
         
         if(currentTime <=0)
         {

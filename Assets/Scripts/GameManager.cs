@@ -24,10 +24,10 @@ public class GameManager : MonoBehaviour
       if(!requested)
       {
          GoogleAdMobController.instance.RequestAndLoadRewardedAd();
-         print("Requested a AD");
+         
          requested = true;
       }
-      print(requested);
+
    }
    public void GameOver(string message){
       overPanel.SetActive(true);
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
    }
    private void Revive(GameObject obj){
       obj.SetActive(false);
-      Timer.Instance.StopTime();
+      Timer.Instance.ResetTimer();
       //Time.timeScale = 1f;
       Timer.Instance.currentTime = Timer.Instance.defaultTime;
       Chance.Instance.ResetChance();
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
       GetRewardAd(_Revive);
    }
    public void SetHintAction(){
-      GetRewardAd(_Hint);
+     // GetRewardAd(_Hint);
+     cardMan.GetHint();
    }
 }

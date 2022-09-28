@@ -5,7 +5,7 @@ public class SetID : MonoBehaviour
     [SerializeField]
     private int id;
     
-    public Sprite[] image;
+
     public int setId{
         get => id;
         
@@ -14,7 +14,7 @@ public class SetID : MonoBehaviour
          }
     }
     private void SetImage(){ 
-        gameObject.GetComponent<Image>().sprite = image[id];
+        gameObject.GetComponent<Image>().sprite = SymbolBase.Instance.image[id];
     }
 }
 
