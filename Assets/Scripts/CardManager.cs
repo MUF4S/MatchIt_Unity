@@ -219,7 +219,6 @@ public class CardManager : MonoBehaviour
         
         for (int i = 0; i < _stackButtons.Length; i++)
         {
-            print($"Stack:{_stackButtons[i].GetComponent<SetID>().setId}      Pressed: {_pressedButton.GetComponent<SetID>().setId}");
             if(_stackButtons[i].GetComponent<SetID>().setId == _pressedButton.GetComponent<SetID>().setId)
             {
                 if(_cards.Count > 1)
