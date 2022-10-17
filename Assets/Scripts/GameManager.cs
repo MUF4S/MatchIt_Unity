@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
    #region variables
+  
    public TextMeshProUGUI messageText;
    public CardManager cardMan;
    public GameObject gamePanel;
