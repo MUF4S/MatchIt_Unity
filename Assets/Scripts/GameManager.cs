@@ -63,5 +63,6 @@ public class GameManager : MonoBehaviour
    public void SetHintAction(){
      // GetRewardAd(_Hint);
      cardMan.GetHint();
+     Points.Instance.SetComboValue(0);
    }
 }

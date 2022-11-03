@@ -23,9 +23,11 @@ public class Chance : MonoBehaviour
         {
             case 1:
                 _chance1.SetActive(true);
+                _chance1.GetComponent<Animator>().SetTrigger("ShowChance");
                 break;
             case 2:
                 _chance2.SetActive(true);
+                _chance2.GetComponent<Animator>().SetTrigger("ShowChance");
                 break;
             case 3:
                 gm.GameOver("Sorry, You lost your chances.");

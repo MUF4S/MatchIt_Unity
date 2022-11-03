@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class CardManager : MonoBehaviour
 {
+    public static CardManager Instance;
     private List<int[]> _cards = new();
     private List<int[]> _usedCards = new();
     public List<float> objScale;
@@ -20,6 +21,7 @@ public class CardManager : MonoBehaviour
     private Button[] _stackButtons;
     private Button[] _playerStackButtons;
     
+    [SerializeField] private Hints _hintScript;
     public Timer timer;
     public Chance chance;
     
@@ -29,7 +31,6 @@ public class CardManager : MonoBehaviour
     
     private int _randomCard;
     
-    private bool _hint;
 
 #region Cards
    private int[] _card1 = {0, 1, 2, 3, 4, 25};
@@ -65,6 +66,9 @@ public class CardManager : MonoBehaviour
    private int[] _card31 = {25, 26, 27, 28, 29, 30};
 #endregion
 
+private void Awake() {
+    Instance = this;
+}
     private void Start() {
         
        _newObjScale = new List<float>(objScale);
@@ -213,8 +217,8 @@ public class CardManager : MonoBehaviour
 }
     public void CheckItem(){
         var isOk = false;
-        if(_hint){
-            RemoveHint();
+        if(_hintScript._hint){
+           _hintScript.RemoveHint();
         }
         
         for (int i = 0; i < _stackButtons.Length; i++)
@@ -223,7 +227,8 @@ public class CardManager : MonoBehaviour
             {
                 if(_cards.Count > 1)
                 {
-                    Debug.Log("Brawo!");
+                    Points.Instance.GetPoints(100);
+                    Points.Instance.SetComboValue(1);
                     GetPlayerCard(_currentCard);
                     GetCard();
                     timer.ResetTimer();
@@ -242,16 +247,18 @@ public class CardManager : MonoBehaviour
         }
         if(!isOk){
             chance.LostChance();
+            Points.Instance.SetComboValue(0);
         }
     }
     public void GetHint(){
-    _hint = true;
+    _hintScript._hint = true;
     for (var i = 0; i < _stackButtons.Length; i++)
     {
         for (var j = 0; j < _playerStackButtons.Length; j++)
         {
             if(_stackButtons[i].GetComponent<SetID>().setId == _playerStackButtons[j].GetComponent<SetID>().setId){
-                    Hint(_stackButtons[i].transform.GetChild(0).gameObject, _playerStackButtons[j].transform.GetChild(0).gameObject);
+                    _hintScript.ShowHint(_stackButtons[i].transform.GetChild(0).gameObject, _playerStackButtons[j].transform.GetChild(0).gameObject);
+                    _hintScript.ChangeButtonState();
                     return;
             }
         }
@@ -264,11 +271,7 @@ public class CardManager : MonoBehaviour
         _imgPlayerStack.SetActive(true);
         _imgStack.SetActive(true);
     }
-    private void RemoveHint(){
-        _imgPlayerStack.SetActive(false);
-        _imgStack.SetActive(false);
-        _hint = false;
-    }
+    
     public void SetPressedButton(GameObject obj){
         _pressedButton = obj;
     }
